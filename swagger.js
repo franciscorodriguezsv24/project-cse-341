@@ -17,6 +17,13 @@ const doc = {
       stock: 150,
       brand: 'Logitech',
       description: 'Ergonomic wireless mouse with USB receiver.'
+    },
+    Category: {
+      name: 'Electronics',
+      description: 'Devices, gadgets, and accessories.',
+      department: 'Technology',
+      displayOrder: 1,
+      active: true
     }
   }
 };

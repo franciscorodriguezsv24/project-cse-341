@@ -8,9 +8,11 @@ validation, error handling, and interactive Swagger documentation.
 ```
 server.js              # App bootstrap: middleware, mounts routes, connects DB, listens
 db/connect.js          # MongoDB connection (initDb / getDatabase)
-routes/index.js        # Root router; mounts /products
-routes/products.js     # Maps HTTP verbs to controller functions
-controllers/products.js# CRUD logic, validation, and error handling
+routes/index.js        # Root router; mounts /products and /categories
+routes/products.js     # Maps HTTP verbs to product controller functions
+routes/categories.js   # Maps HTTP verbs to category controller functions
+controllers/products.js  # Product CRUD logic, validation, and error handling
+controllers/categories.js# Category CRUD logic, validation, and error handling
 swagger.js             # Generates swagger-output.json from route annotations
 ```
 
@@ -41,11 +43,16 @@ swagger.js             # Generates swagger-output.json from route annotations
 
 | Method | Route            | Description            |
 |--------|------------------|------------------------|
-| GET    | `/products`      | Get all products       |
-| GET    | `/products/:id`  | Get one product by id  |
-| POST   | `/products`      | Create a product       |
-| PUT    | `/products/:id`  | Update a product       |
-| DELETE | `/products/:id`  | Delete a product       |
+| GET    | `/products`        | Get all products        |
+| GET    | `/products/:id`    | Get one product by id   |
+| POST   | `/products`        | Create a product        |
+| PUT    | `/products/:id`    | Update a product        |
+| DELETE | `/products/:id`    | Delete a product        |
+| GET    | `/categories`      | Get all categories      |
+| GET    | `/categories/:id`  | Get one category by id  |
+| POST   | `/categories`      | Create a category       |
+| PUT    | `/categories/:id`  | Update a category       |
+| DELETE | `/categories/:id`  | Delete a category       |
 
 Interactive documentation: `GET /api-docs`
 
@@ -59,6 +66,16 @@ Interactive documentation: `GET /api-docs`
 | stock        | number | integer >= 0          |
 | brand        | string |                       |
 | description  | string |                       |
+
+## Category fields (all required)
+
+| Field        | Type    | Notes                |
+|--------------|---------|----------------------|
+| name         | string  |                      |
+| description  | string  |                      |
+| department   | string  |                      |
+| displayOrder | number  | integer >= 0         |
+| active       | boolean |                      |
 
 ## Deploying to Render
 
