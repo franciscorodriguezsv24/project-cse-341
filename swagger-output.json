@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "CSE 341 Products API",
-    "description": "Products REST API with full CRUD, validation, and error handling.",
+    "description": "Products REST API with full CRUD, validation, and error handling. Write routes (POST/PUT/DELETE) are protected by GitHub OAuth — log in at /login first, then the session cookie authorizes your requests.",
     "version": "1.0.0"
   },
   "host": "localhost:8080",
@@ -11,6 +11,15 @@
     "http",
     "https"
   ],
+  "securityDefinitions": {
+    "githubOAuth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://github.com/login/oauth/authorize",
+      "description": "GitHub OAuth. In practice, open /login in the browser to sign in; the resulting session cookie authorizes protected routes.",
+      "scopes": {}
+    }
+  },
   "paths": {
     "/": {
       "get": {
@@ -18,6 +27,48 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/login": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Start GitHub OAuth login",
+        "description": "Redirects to GitHub to authorize the app. On success you are redirected back and a session cookie is set.",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/github/callback": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "GitHub OAuth callback",
+        "description": "GitHub redirects here after authorization. Establishes the login session, then redirects to /.",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Log out",
+        "description": "Ends the session and redirects to /.",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
@@ -45,8 +96,8 @@
         "tags": [
           "Products"
         ],
-        "summary": "Create a new product",
-        "description": "",
+        "summary": "Create a new product (requires login)",
+        "description": "Protected route. Log in at /login first; the session cookie authorizes the request.",
         "parameters": [
           {
             "name": "body",
@@ -65,10 +116,18 @@
           "400": {
             "description": "Missing or invalid field(s)."
           },
+          "401": {
+            "description": "Not logged in."
+          },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubOAuth": []
+          }
+        ]
       }
     },
     "/products/{id}": {
@@ -108,8 +167,8 @@
         "tags": [
           "Products"
         ],
-        "summary": "Update an existing product by id",
-        "description": "",
+        "summary": "Update an existing product by id (requires login)",
+        "description": "Protected route. Log in at /login first; the session cookie authorizes the request.",
         "parameters": [
           {
             "name": "id",
@@ -134,20 +193,28 @@
           "400": {
             "description": "Invalid id or missing/invalid field(s)."
           },
+          "401": {
+            "description": "Not logged in."
+          },
           "404": {
             "description": "Product not found."
           },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubOAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Products"
         ],
-        "summary": "Delete a product by id",
-        "description": "",
+        "summary": "Delete a product by id (requires login)",
+        "description": "Protected route. Log in at /login first; the session cookie authorizes the request.",
         "parameters": [
           {
             "name": "id",
@@ -163,13 +230,21 @@
           "400": {
             "description": "Invalid product id."
           },
+          "401": {
+            "description": "Not logged in."
+          },
           "404": {
             "description": "Product not found."
           },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubOAuth": []
+          }
+        ]
       }
     },
     "/categories/": {
@@ -195,8 +270,8 @@
         "tags": [
           "Categories"
         ],
-        "summary": "Create a new category",
-        "description": "",
+        "summary": "Create a new category (requires login)",
+        "description": "Protected route. Log in at /login first; the session cookie authorizes the request.",
         "parameters": [
           {
             "name": "body",
@@ -215,10 +290,18 @@
           "400": {
             "description": "Missing or invalid field(s)."
           },
+          "401": {
+            "description": "Not logged in."
+          },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubOAuth": []
+          }
+        ]
       }
     },
     "/categories/{id}": {
@@ -258,8 +341,8 @@
         "tags": [
           "Categories"
         ],
-        "summary": "Update an existing category by id",
-        "description": "",
+        "summary": "Update an existing category by id (requires login)",
+        "description": "Protected route. Log in at /login first; the session cookie authorizes the request.",
         "parameters": [
           {
             "name": "id",
@@ -284,20 +367,28 @@
           "400": {
             "description": "Invalid id or missing/invalid field(s)."
           },
+          "401": {
+            "description": "Not logged in."
+          },
           "404": {
             "description": "Category not found."
           },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubOAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
           "Categories"
         ],
-        "summary": "Delete a category by id",
-        "description": "",
+        "summary": "Delete a category by id (requires login)",
+        "description": "Protected route. Log in at /login first; the session cookie authorizes the request.",
         "parameters": [
           {
             "name": "id",
@@ -313,13 +404,21 @@
           "400": {
             "description": "Invalid category id."
           },
+          "401": {
+            "description": "Not logged in."
+          },
           "404": {
             "description": "Category not found."
           },
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "githubOAuth": []
+          }
+        ]
       }
     }
   },
@@ -350,6 +449,10 @@
         "description": {
           "type": "string",
           "example": "Ergonomic wireless mouse with USB receiver."
+        },
+        "sku": {
+          "type": "string",
+          "example": "LOG-WM-001"
         }
       }
     },

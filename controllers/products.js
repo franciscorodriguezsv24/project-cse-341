@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 const { getDatabase } = require('../db/connect');
 
 const COLLECTION = 'products';
-const REQUIRED_FIELDS = ['name', 'category', 'price', 'stock', 'brand', 'description'];
+const REQUIRED_FIELDS = ['name', 'category', 'price', 'stock', 'brand', 'description', 'sku'];
 
 // Validate that every required field is present and non-empty.
 const getMissingFields = (body) =>
@@ -27,7 +27,8 @@ const buildProduct = (body) => ({
   price: body.price,
   stock: body.stock,
   brand: body.brand,
-  description: body.description
+  description: body.description,
+  sku: body.sku
 });
 
 // GET /products -> all products
